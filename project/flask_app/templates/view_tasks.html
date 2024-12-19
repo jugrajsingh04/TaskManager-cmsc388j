@@ -1,0 +1,91 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container mx-auto w-full md:w-2/3 lg:w-1/2 text-center my-6">
+    <!-- Motivational Quote -->
+    <div class="bg-blue-100 text-blue-800 px-6 py-4 rounded-lg shadow-md">
+        <p class="text-xl italic font-semibold">{{ quote }}</p>
+    </div>
+</div>
+
+
+
+<!-- Tasks Table -->
+<div class="container mx-auto w-full md:w-3/4 lg:w-2/3 my-6">
+    <h2 class="text-2xl font-bold text-center mb-4">Your Tasks</h2>
+    <div class="overflow-x-auto">
+        <table class="table-auto w-full border-collapse border border-gray-200 shadow-lg rounded-lg">
+            <thead>
+                <tr class="bg-blue-600 text-white">
+                    <th class="px-4 py-3 text-left">#</th>
+                    <th class="px-4 py-3 text-left">Task</th>
+                    <th class="px-4 py-3 text-left">Description</th>
+                    <th class="px-4 py-3 text-left">Due Date</th>
+                    <th class="px-4 py-3 text-left">Status</th>
+                    <th class="px-4 py-3 text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+    {% if task.completed %}
+    <!-- Completed Task -->
+    <tr class="bg-gray-50 hover:bg-blue-100 transition duration-150">
+        <td class="border px-4 py-3">{{ loop.index }}</td>
+        <td class="border px-4 py-3 line-through text-gray-400">{{ task.task }}</td>
+        <td class="border px-4 py-3 line-through text-gray-400">{{ task.description }}</td>
+        <td class="border px-4 py-3 line-through text-gray-400">{{ task.date.strftime('%Y-%m-%d') }}</td>
+        <td class="border px-4 py-3 text-center">
+            ✅
+        </td>
+        <td class="border px-4 py-3 text-center">
+            <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}" class="text-red-600 hover:text-red-400 no-underline">
+                🗑️
+            </a>
+        </td>
+    </tr>
+    {% else %}
+    <!-- Not Completed Task -->
+    <tr class="bg-gray-50 hover:bg-blue-100 transition duration-150">
+        <td class="border px-4 py-3">{{ loop.index }}</td>
+        <td class="border px-4 py-3">{{ task.task }}</td>
+        <td class="border px-4 py-3">{{ task.description }}</td>
+        <td class="border px-4 py-3">{{ task.date.strftime('%Y-%m-%d') }}</td>
+        <td class="border px-4 py-3 text-center">
+            ⋯
+        </td>
+        <td class="border px-4 py-3 text-center">
+            <form action="{{ url_for('tasks.complete_task', task_id=task.id) }}" method="POST" style="display:inline;">
+                <button class="text-green-600 hover:text-green-400 no-underline">✅</button>
+            </form>
+            |
+            <a href="{{ url_for('tasks.edit_task', task_id=task.id) }}" class="text-blue-600 hover:text-blue-400 no-underline">
+                ✏️
+            </a>
+            |
+            <a href="{{ url_for('tasks.delete_task', task_id=task.id) }}" class="text-red-600 hover:text-red-400 no-underline">
+                🗑️
+            </a>
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <td colspan="6" class="text-center border px-4 py-3">
+            <a href="{{ url_for('tasks.create_task') }}" class="text-blue-600 font-semibold underline hover:text-blue-400">Add another task</a>
+        </td>
+{% else %}
+<tr>
+    <td colspan="6" class="text-center border px-4 py-3 text-gray-500">
+        No tasks found. <a href="{{ url_for('tasks.create_task') }}" class="text-blue-600 font-semibold underline hover:text-blue-400">Add some tasks</a> to get started!
+    </td>
+</tr>
+{% endfor %}
+<!-- add more task button-->
+
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

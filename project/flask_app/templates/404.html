@@ -1,0 +1,8 @@
+{% extends "header.html" %}
+{% block content %}
+{# error message and link back to index page #}
+<h1 class="text-4xl text-center text-red-400">404 Not Found</h1>
+<p class="text-center">
+  <a href="{{ url_for('tasks.index') }}" class="text-blue-400 duration-150 hover:text-blue-200 underline">Back to Home</a>
+</p>
+{% endblock %}
